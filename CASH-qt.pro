@@ -1,24 +1,28 @@
 TEMPLATE = app
 TARGET = CASH-qt
 VERSION = 0.7.2
+# for OS X 10.7, it is necessary to point to the system includes and to the berkely db 4.8 library
+# INCLUDEPATH += src src/json src/qt /usr/include/mach /sw/include/db4
+# for OS X 10.8, it may only be necessary to point to the berkely db 4.8 library
 INCLUDEPATH += src src/json src/qt
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE BOOST_THREAD_PROVIDES_GENERIC_SHARED_MUTEX_ON_WIN __NO_SYSTEM_INCLUDES
 CONFIG += no_include_pwd
 
 # UNCOMMENT THIS SECTION TO BUILD ON WINDOWS
-
-windows:LIBS += -lshlwapi
-LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
-windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
-LIBS += -lboost_system-mgw46-mt-sd-1_53 -lboost_filesystem-mgw46-mt-sd-1_53 -lboost_program_options-mgw46-mt-sd-1_53 -lboost_thread-mgw46-mt-sd-1_53
-BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
-BOOST_INCLUDE_PATH=C:/deps/boost
-BOOST_LIB_PATH=C:/deps/boost/stage/lib
-BDB_INCLUDE_PATH=c:/deps/db/build_unix
-BDB_LIB_PATH=c:/deps/db/build_unix
-OPENSSL_INCLUDE_PATH=c:/deps/ssl/include
-OPENSSL_LIB_PATH=c:/deps/ssl
+# COMMENT THIS SECTION TO BUILD ON MAC
+# windows:LIBS += -lshlwapi
+# LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
+# LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
+# windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
+# LIBS += -lboost_system-mgw46-mt-sd-1_53 -lboost_filesystem-mgw46-mt-sd-1_53 -lboost_program_options-mgw46-mt-sd-1_53 -lboost_thread-mgw46-mt-sd-1_53
+# BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
+# BOOST_INCLUDE_PATH=C:/deps/boost
+# BOOST_LIB_PATH=C:/deps/boost/stage/lib
+# BDB_INCLUDE_PATH=c:/deps/db/build_unix
+# BDB_LIB_PATH=c:/deps/db/build_unix
+# OPENSSL_INCLUDE_PATH=c:/deps/ssl/include
+# OPENSSL_LIB_PATH=c:/deps/ssl
+# END OF WINDOWS SPECIFIC SECTION
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -26,8 +30,12 @@ UI_DIR = build
 
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
-    # Mac: compile for maximum compatibility (10.5, 32-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
+    # Mac: no longer recommended to compile for maximum compatibility (10.5, 32-bit)
+    # macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.5 -arch i386 -isysroot /Developer/SDKs/MacOSX10.5.sdk
+    # If max compatibility fails, work up the versions or simply omit for installed version
+    # macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.7 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.7.sdk
+    # Build only for current OS X version
+    macx:QMAKE_CXXFLAGS += -arch x86_64
 
     !windows:!macx {
         # Linux: static link
