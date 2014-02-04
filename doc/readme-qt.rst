@@ -52,6 +52,8 @@ Mac OS X
 
 - Download and install the `Qt Mac OS X SDK`_. It is recommended to also install Apple's Xcode with UNIX tools.
 
+  The recommended version of Qt Creator is 2.8.1.
+
 - Download and install `MacPorts`_.
 
 - Execute the following commands in a terminal to get the dependencies:
@@ -61,7 +63,24 @@ Mac OS X
 	sudo port selfupdate
 	sudo port install boost db48 miniupnpc
 
+
 - Open the .pro file in Qt Creator and build as normal (cmd-B)
+
+  **NOTE** It may be necessary to explicitly specify the compiler from in Qt Creator.
+  In QT Creator 2.8.1, click the Projects icon on the left-hand tool bar,
+  click "Build & Run" in the window that opens, then click "Manage Kits"
+  in the toolbar, then click "Kits" in the new tool bar,
+  click the selection below "Manual" in the listbox,
+  then select the compiler "Clang (x86 64 bit in /usr/bin)" and hit "Apply" then hit "OK".
+
+  **NOTE ALSO** It may be necessary to explicitly set include paths to the
+  system includes (e.g. ``/usr/include/mach``) and/or to the Berkely DB 4.8.
+
+  For example, the latter might be in ``/opt/local/include/db48`` if from mac ports.
+
+  Setting includes can be done by editing the .pro file and modifying the line
+  that starts with "INCLUDEPATH" according to the example.
+
 
 .. _`Qt Mac OS X SDK`: http://qt.nokia.com/downloads/sdk-mac-os-cpp
 .. _`MacPorts`: http://www.macports.org/install.php
